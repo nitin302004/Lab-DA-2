@@ -1,0 +1,8 @@
+[02:07:04] TOPIC: smarthome/sensors | QoS: 0 | RETAIN: True | PAYLOAD: {"temperature":0,"humidity":0,"heatIndex":-3.944405,"personPresent":true,"fanPercent":98,"lightOn":false,"manualOverride":true}
+[02:07:04] TOPIC: smarthome/status | QoS: 0 | RETAIN: True | PAYLOAD: {"lampu_teras":0,"lampu_ruang_tamu":0,"lampu_ruang_keluarga":0,"lampu_kamar_tidur":0,"lampu_dapur":0,"pintu_depan":0,"pintu_belakang":0,"jendela_depan":0,"jendela_belakang":0,"pompa_air":0,"ac":0}
+[02:07:04] TOPIC: smarthome/sensors/temperature | QoS: 0 | RETAIN: False | PAYLOAD: 27.7
+[02:07:09] TOPIC: smarthome/sensors/temperature | QoS: 0 | RETAIN: False | PAYLOAD: 23.4
+[02:07:10] TOPIC: smarthome/sensors/humidity | QoS: 0 | RETAIN: False | PAYLOAD: 41
+[02:07:14] TOPIC: smarthome/sensors/temperature | QoS: 0 | RETAIN: False | PAYLOAD: 29.3
+[02:07:17] TOPIC: smarthome/sensors/humidity | QoS: 0 | RETAIN: False | PAYLOAD: 44
+[02:07:19] TOPIC: smarthome/sensors/temperature | QoS: 0 | RETAIN: False | PAYLOAD: 24.7

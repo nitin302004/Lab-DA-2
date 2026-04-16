@@ -1,0 +1,499 @@
+[
+    {
+        "id": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "type": "tab",
+        "label": "Pub/Sub Smart Home",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b254ada8-0280-4f41-8088-dea92c11d363",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "antigravity_2e831032",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "1d402c1f-3057-4f90-b43f-7179313c9293",
+        "type": "ui_tab",
+        "name": "Smart Home Hub",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d819faef-c48b-4982-b776-941a53af9699",
+        "type": "ui_group",
+        "name": "Live Data Feed",
+        "tab": "1d402c1f-3057-4f90-b43f-7179313c9293",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "5013504cc3c2ede4",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "3731353d-fd08-433c-9ce4-c197d6b67f71",
+        "type": "inject",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Temp Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "func_temp"
+            ]
+        ]
+    },
+    {
+        "id": "func_temp",
+        "type": "function",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Gen Temperature",
+        "func": "msg.payload = (Math.random() * 10 + 20).toFixed(1);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "mqtt_out_temp"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_temp",
+        "type": "mqtt out",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Pub: Temp",
+        "topic": "smarthome/sensors/temperature",
+        "qos": "0",
+        "retain": "false",
+        "broker": "b254ada8-0280-4f41-8088-dea92c11d363",
+        "x": 550,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4b622bd9-020b-48b3-b1d2-df63a6c04c3c",
+        "type": "inject",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Hum Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "7",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 160,
+        "wires": [
+            [
+                "func_hum"
+            ]
+        ]
+    },
+    {
+        "id": "func_hum",
+        "type": "function",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Gen Humidity",
+        "func": "msg.payload = Math.floor(Math.random() * 20 + 40);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 160,
+        "wires": [
+            [
+                "mqtt_out_hum"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_hum",
+        "type": "mqtt out",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Pub: Humidity",
+        "topic": "smarthome/sensors/humidity",
+        "qos": "0",
+        "retain": "false",
+        "broker": "b254ada8-0280-4f41-8088-dea92c11d363",
+        "x": 550,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "42b4f1e9-6f3e-41ca-883a-5726b4c49613",
+        "type": "inject",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Set Status Online",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Online",
+        "payloadType": "str",
+        "x": 160,
+        "y": 240,
+        "wires": [
+            [
+                "mqtt_out_status"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_status",
+        "type": "mqtt out",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Pub: Status (QoS 1, Retain)",
+        "topic": "smarthome/status",
+        "qos": "1",
+        "retain": "true",
+        "broker": "b254ada8-0280-4f41-8088-dea92c11d363",
+        "x": 420,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_wildcard",
+        "type": "mqtt in",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Sub: Sensors Wildcard (#)",
+        "topic": "smarthome/sensors/#",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "b254ada8-0280-4f41-8088-dea92c11d363",
+        "inputs": 0,
+        "x": 210,
+        "y": 380,
+        "wires": [
+            [
+                "switch_node",
+                "debug_wildcard"
+            ]
+        ]
+    },
+    {
+        "id": "debug_wildcard",
+        "type": "debug",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Debug: Sensor Logs",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 450,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "switch_node",
+        "type": "switch",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Route by Topic",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "smarthome/sensors/temperature",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "smarthome/sensors/humidity",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 440,
+        "y": 380,
+        "wires": [
+            [
+                "gauge_temp",
+                "chart_temp"
+            ],
+            [
+                "gauge_hum"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_temp",
+        "type": "ui_gauge",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Temp Gauge",
+        "group": "d819faef-c48b-4982-b776-941a53af9699",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature (°C)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 670,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "chart_temp",
+        "type": "ui_chart",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Temp Chart",
+        "group": "d819faef-c48b-4982-b776-941a53af9699",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature History",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "15",
+        "ymax": "35",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 670,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "gauge_hum",
+        "type": "ui_gauge",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Hum Gauge",
+        "group": "d819faef-c48b-4982-b776-941a53af9699",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Humidity (%)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 670,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_status",
+        "type": "mqtt in",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Sub: Status (Retained Demo)",
+        "topic": "smarthome/status",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "b254ada8-0280-4f41-8088-dea92c11d363",
+        "inputs": 0,
+        "x": 220,
+        "y": 500,
+        "wires": [
+            [
+                "text_status",
+                "debug_status"
+            ]
+        ]
+    },
+    {
+        "id": "debug_status",
+        "type": "debug",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "name": "Debug: Status",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 440,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "text_status",
+        "type": "ui_text",
+        "z": "a5f1da63-250a-4f39-b013-b194c6ba181a",
+        "group": "d819faef-c48b-4982-b776-941a53af9699",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "System Status",
+        "label": "Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 440,
+        "y": 500,
+        "wires": []
+    }
+]
